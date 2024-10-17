@@ -145,6 +145,9 @@ const UserData = async (req, res, next) => {
           },
           {
             path: 'resources.test',    // Populate tests inside resources for each chapter
+          },
+          {
+            path: 'resources.videos',    // Populate tests inside resources for each chapter
           }
         ]
       });
@@ -165,6 +168,17 @@ const UserData = async (req, res, next) => {
           title: testx.title,  // Assuming 'title' field in each note
           createdAt:testx.createdAt
         }));
+        
+        const videoData = chapter.resources.videos.map(video => ({
+          id: video._id,
+          title: video.title,  // Assuming 'title' field in each note
+          desc:video.desc,
+          filePath:video.filePath,
+          videoType:video.videoType,
+          youtubeVideoId:video.youtubeVideoId
+          
+        }));
+
   
   
         return {
@@ -173,6 +187,8 @@ const UserData = async (req, res, next) => {
           resources: {
             notes: notesData,  // Include the populated notes array
             tests: testsData,
+            videos: videoData
+
           }
         };
       });
@@ -220,7 +236,7 @@ const UserData = async (req, res, next) => {
   
       // Create and Handle JWT Tokens
       const accessToken = jwt.sign({ userId: user.id }, "johnkhore", {
-        expiresIn: "30m",
+        expiresIn: "30s",
       });
       const refreshToken = jwt.sign(
         { userId: user.id },

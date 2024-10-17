@@ -2,15 +2,23 @@ const { User } = require("../models/User");
 const jwt = require("jsonwebtoken");
 
 const handleRefreshToken = async (req, res) => {
+  console.log("Inside Hanlde refresh token!");
   // get the refresh token from the cookies
   const cookies = req.cookies;
+  console.log("Cookies i got: ",cookies);
   if (!cookies?.jwt)
     return res.status(401).json({ success: false, message: "Unauthorized" });
 
   const refreshToken = cookies.jwt;
 
+  console.log("refreshToken: ",refreshToken);
+
   // find the user in the DB based on refresh token
   const foundUser = await User.findOne({ refreshToken }).exec();
+
+  if(!foundUser){
+    console.log("Nhi mila");
+  }
   if (!foundUser)
     return res
       .status(403)
@@ -46,7 +54,7 @@ const handleRefreshToken = async (req, res) => {
     const userID = foundUser.id;
 
     const token = jwt.sign({ userId: userID }, "johnkhore", {
-      expiresIn: 1800,
+      expiresIn: '30s',
     });
 
     res.status(200).json({ success: true, message: "token refreshed", token });
