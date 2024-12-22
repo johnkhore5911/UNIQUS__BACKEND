@@ -186,7 +186,7 @@ for (const classId of user.classroomsArray) {
     const refreshToken = jwt.sign(
       { userId: user.id },
       "johnkhore",
-      { expiresIn: '60s' }
+      { expiresIn: 1800 }
     );
 
     // Saving refreshToken with current user
