@@ -186,7 +186,7 @@ for (const classId of user.classroomsArray) {
     const refreshToken = jwt.sign(
       { userId: user.id },
       "johnkhore",
-      { expiresIn: 1800 }
+      { expiresIn: '60s' }
     );
 
     // Saving refreshToken with current user
@@ -198,7 +198,8 @@ for (const classId of user.classroomsArray) {
 
     res.cookie("jwt", refreshToken, {
       sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000,
+      // maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 2 * 60 * 1000,
     });
 
     // User data to be sent
